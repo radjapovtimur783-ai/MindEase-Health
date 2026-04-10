@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Check - MindEase Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" class="logo">MindEase Health</a>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/history">History</a>
+            <a href="/support">Support</a>
+            <a href="/book">Book Session</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero-box">
+            <h1>Mood Check Module</h1>
+            <p>Describe your current emotional state and receive a personalized suggestion</p>
+
+            <form class="login-form" method="POST">
+                <textarea name="mood_text" rows="6" placeholder="Example: I feel stressed and tired because of exams" required></textarea>
+                <button type="submit" class="btn">Analyze Mood</button>
+            </form>
+
+            {% if result %}
+                <div class="result-box">
+                    <h2>Detected Mood: {{ result }}</h2>
+                    <p><strong>Recommended Action:</strong> {{ advice }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+{% if result %}
+    <div class="result-box">
+        <h2>Detected Mood: {{ result }}</h2>
+        <p><strong>Recommended Action:</strong> {{ advice }}</p>
+        <a href="/history" class="btn">View Mood History</a>
+    </div>
+{% endif %}
