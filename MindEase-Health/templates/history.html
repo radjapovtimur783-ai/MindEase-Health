@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - MindEase Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" class="logo">MindEase Health</a>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/mood">Mood Check</a>
+            <a href="/support">Support</a>
+            <a href="/book">Book Session</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero-box">
+            <h1>Mood History</h1>
+            <p>Your saved emotional records and detected moods</p>
+
+            <table>
+                <tr>
+                    <th>User Input</th>
+                    <th>Detected Mood</th>
+                </tr>
+
+                {% for row in data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
