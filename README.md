@@ -46,7 +46,7 @@ MindEase-Health/
 │
 ├── static/
 │   └── style.css
-⚙️ How to Run Locally
+ How to Run Locally
 Clone the repository:
 git clone https://github.com/your-username/MindEase-Health.git
 Navigate into the project:
