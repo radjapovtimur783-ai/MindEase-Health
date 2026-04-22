@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - MindEase Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <div class="navbar">
+            <a href="/" class="logo">MindEase Health</a>
+
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-pill">Dashboard</a>
+                <a href="/admin" class="nav-pill active">Admin</a>
+                <a href="/book" class="nav-pill">Bookings</a>
+                <a href="/notes" class="nav-pill">Notes</a>
+            </div>
+
+            <div class="nav-user">
+                <span class="user-badge">👋 {{ user_name }}</span>
+                <a href="/logout" class="btn btn-small">Logout</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="dashboard-hero">
+                <div class="hero-left">
+                    <span class="section-tag">Admin Control Panel</span>
+                    <h1>Welcome, Admin</h1>
+                    <p class="hero-text">
+                        Monitor users, bookings, mood submissions, and wellness notes from one central panel.
+                    </p>
+                </div>
+
+                <div class="hero-right">
+                    <div class="spotlight-card">
+                        <p class="spotlight-label">Admin Overview</p>
+                        <h2>{{ total_users }}</h2>
+                        <p class="spotlight-subtext">Registered users in the system</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Total Users</p>
+                    <h3>{{ total_users }}</h3>
+                    <span class="stat-note">Registered accounts</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Bookings</p>
+                    <h3>{{ total_bookings }}</h3>
+                    <span class="stat-note">Support session requests</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Mood Entries</p>
+                    <h3>{{ total_moods }}</h3>
+                    <span class="stat-note">Saved emotional records</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Wellness Notes</p>
+                    <h3>{{ total_notes }}</h3>
+                    <span class="stat-note">Personal notes created</span>
+                </div>
+            </section>
+
+            <section class="content-panel chart-panel">
+                <div class="panel-header">
+                    <h2>Registered Users</h2>
+                    <p>All current user accounts</p>
+                </div>
+
+                {% if users %}
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                    </tr>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user["id"] }}</td>
+                        <td>{{ user["full_name"] }}</td>
+                        <td>{{ user["email"] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <div class="result-box">
+                    <h2>No Users Found</h2>
+                    <p>No accounts have been registered yet.</p>
+                </div>
+                {% endif %}
+            </section>
+
+            <section class="content-panel chart-panel">
+                <div class="panel-header">
+                    <h2>Support Bookings</h2>
+                    <p>All session requests submitted through the platform</p>
+                </div>
+
+                {% if bookings %}
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Session Type</th>
+                        <th>Preferred Date</th>
+                        <th>Notes</th>
+                    </tr>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking["id"] }}</td>
+                        <td>{{ booking["full_name"] }}</td>
+                        <td>{{ booking["email"] }}</td>
+                        <td>{{ booking["session_type"] }}</td>
+                        <td>{{ booking["preferred_date"] }}</td>
+                        <td>{{ booking["notes"] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <div class="result-box">
+                    <h2>No Bookings Yet</h2>
+                    <p>No support sessions have been requested yet.</p>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</body>
+</html>
