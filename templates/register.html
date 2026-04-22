@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MindEase Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" class="logo">MindEase Health</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero-box">
+            <h1>Create Account</h1>
+            <p>Register to use the MindEase Health wellness platform</p>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="success-box">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <form class="login-form" method="POST" action="/register">
+                <input type="text" name="full_name" placeholder="Full name" required>
+                <input type="email" name="email" placeholder="University email address" required>
+                <input type="password" name="password" placeholder="Create password" required>
+                <input type="password" name="confirm_password" placeholder="Confirm password" required>
+                <button type="submit" class="btn">Register</button>
+            </form>
+
+            <p>Already have an account?</p>
+            <a href="/login" class="btn">Go to Login</a>
+        </div>
+    </div>
+</body>
+</html>

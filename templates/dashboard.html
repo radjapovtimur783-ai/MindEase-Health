@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MindEase Health</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="page-shell">
+        <div class="navbar">
+            <a href="/" class="logo">MindEase Health</a>
+
+            <div class="nav-links">
+                <a href="/dashboard" class="nav-pill active">Dashboard</a>
+                <a href="/mood" class="nav-pill">Mood Check</a>
+                <a href="/history" class="nav-pill">History</a>
+                <a href="/support" class="nav-pill">Support</a>
+                <a href="/book" class="nav-pill">Book Session</a>
+                <a href="/notes" class="nav-pill">Wellness Notes</a>
+            </div>
+
+            <div class="nav-user">
+                <span class="user-badge">👋 {{ user_name }}</span>
+                <a href="/logout" class="btn btn-small">Logout</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="dashboard-hero">
+                <div class="hero-left">
+                    <span class="section-tag">Student Wellness Platform</span>
+                    <h1>Welcome back, {{ user_name }}</h1>
+                    <p class="hero-text">
+                        Track your emotional wellbeing, review your mood patterns, and access support tools in one place.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="/mood" class="btn">Start Mood Check</a>
+                        <a href="/book" class="btn btn-secondary">Book Support Session</a>
+                    </div>
+                </div>
+
+                <div class="hero-right">
+                    <div class="spotlight-card">
+                        <p class="spotlight-label">Latest Mood</p>
+                        <h2>{{ latest_mood }}</h2>
+                        <p class="spotlight-subtext">Your most recent recorded emotional state</p>
+                    </div>
+                </div>
+            </section>
+
+            {% if show_alert %}
+            <section class="alert-box">
+                <div class="alert-content">
+                    <h2>Wellness Support Alert</h2>
+                    <p>
+                        We noticed that {{ negative_recent }} of your last 5 mood entries were negative.
+                        It may help to review support resources or book a session.
+                    </p>
+                </div>
+                <a href="/book" class="btn btn-warning">Book a Support Session</a>
+            </section>
+            {% endif %}
+
+            <section class="stats-grid">
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Total Mood Entries</p>
+                    <h3>{{ total_entries }}</h3>
+                    <span class="stat-note">All recorded submissions</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Latest Mood</p>
+                    <h3>{{ latest_mood }}</h3>
+                    <span class="stat-note">Most recent detected result</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Positive Entries</p>
+                    <h3>{{ positive_count }}</h3>
+                    <span class="stat-note">Happy and uplifting moods</span>
+                </div>
+
+                <div class="stat-card glass-card">
+                    <p class="stat-label">Negative Entries</p>
+                    <h3>{{ negative_count }}</h3>
+                    <span class="stat-note">Sad, stressed, or anxious moods</span>
+                </div>
+            </section>
+
+            <section class="content-panel chart-panel">
+                <div class="panel-header">
+                    <h2>Mood Distribution</h2>
+                    <p>Overview of all recorded mood categories</p>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="moodChart"></canvas>
+                </div>
+            </section>
+
+            <section class="dashboard-main-grid">
+                <div class="content-panel large-panel">
+                    <div class="panel-header">
+                        <h2>Your Wellness Tools</h2>
+                        <p>Choose what you want to do next</p>
+                    </div>
+
+                    <div class="action-grid">
+                        <a href="/mood" class="feature-action-card action-blue">
+                            <div class="action-icon">💙</div>
+                            <h3>Mood Check</h3>
+                            <p>Describe how you feel and get a quick emotional analysis with advice.</p>
+                        </a>
+
+                        <a href="/book" class="feature-action-card action-green">
+                            <div class="action-icon">📅</div>
+                            <h3>Book Session</h3>
+                            <p>Request support for stress, emotional wellbeing, or general guidance.</p>
+                        </a>
+
+                        <a href="/history" class="feature-action-card action-purple">
+                            <div class="action-icon">📘</div>
+                            <h3>Mood History</h3>
+                            <p>Review your saved entries and reflect on changes over time.</p>
+                        </a>
+
+                        <a href="/support" class="feature-action-card action-pink">
+                            <div class="action-icon">🌿</div>
+                            <h3>Support Resources</h3>
+                            <p>Explore practical self-care suggestions for everyday challenges.</p>
+                        </a>
+
+                        <a href="/notes" class="feature-action-card action-gold">
+                            <div class="action-icon">📝</div>
+                            <h3>Wellness Notes</h3>
+                            <p>Save your reflections, reminders, and personal wellbeing notes.</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="content-panel side-panel">
+                    <div class="panel-header">
+                        <h2>Quick Summary</h2>
+                        <p>Your dashboard at a glance</p>
+                    </div>
+
+                    <div class="mini-summary-list">
+                        <div class="mini-summary-item">
+                            <span class="mini-title">Main focus</span>
+                            <strong>Mental wellness tracking</strong>
+                        </div>
+
+                        <div class="mini-summary-item">
+                            <span class="mini-title">Current status</span>
+                            <strong>{{ latest_mood }}</strong>
+                        </div>
+
+                        <div class="mini-summary-item">
+                            <span class="mini-title">Positive check-ins</span>
+                            <strong>{{ positive_count }}</strong>
+                        </div>
+
+                        <div class="mini-summary-item">
+                            <span class="mini-title">Support reminder</span>
+                            <strong>
+                                {% if show_alert %}
+                                    Follow up recommended
+                                {% else %}
+                                    Looking balanced
+                                {% endif %}
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="side-cta">
+                        <h3>Need support right now?</h3>
+                        <p>Use the support page or request a session directly from the platform.</p>
+                        <a href="/support" class="btn btn-secondary full-width-btn">Open Support Resources</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const moodLabels = ["Happy", "Sad", "Stressed", "Anxious", "Neutral"];
+        const moodValues = [
+            {{ mood_counts["Happy"] }},
+            {{ mood_counts["Sad"] }},
+            {{ mood_counts["Stressed"] }},
+            {{ mood_counts["Anxious"] }},
+            {{ mood_counts["Neutral"] }}
+        ];
+
+        const ctx = document.getElementById("moodChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: moodLabels,
+                datasets: [{
+                    label: "Mood Entries",
+                    data: moodValues,
+                    backgroundColor: [
+                        "rgba(73, 101, 233, 0.85)",
+                        "rgba(181, 140, 211, 0.85)",
+                        "rgba(63, 163, 122, 0.85)",
+                        "rgba(235, 147, 11, 0.85)",
+                        "rgba(132, 142, 161, 0.85)"
+                    ],
+                    borderColor: [
+                        "rgba(73, 101, 233, 1)",
+                        "rgba(181, 140, 211, 1)",
+                        "rgba(63, 163, 122, 1)",
+                        "rgba(235, 147, 11, 1)",
+                        "rgba(132, 142, 161, 1)"
+                    ],
+                    borderWidth: 1.5,
+                    borderRadius: 10,
+                    maxBarThickness: 58
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 900
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: "rgba(31, 41, 64, 0.95)",
+                        titleColor: "#ffffff",
+                        bodyColor: "#ffffff",
+                        padding: 12,
+                        cornerRadius: 10
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0,
+                            color: "#66728c",
+                            font: {
+                                size: 13
+                            }
+                        },
+                        grid: {
+                            color: "rgba(102, 114, 140, 0.12)"
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: "#66728c",
+                            font: {
+                                size: 13,
+                                weight: "600"
+                            }
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
